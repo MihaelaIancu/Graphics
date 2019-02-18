@@ -1,0 +1,728 @@
+///*
+//// TRIUNGHI ROTIT / STATIC
+//
+//#include <windows.h>
+//#include <gl/freeglut.h>
+//
+//void init (void)  // initializare fereastra de vizualizare
+//{
+//glClearColor (1.0, 1.0, 1.0, 0.0); // precizeaza culoarea de fond a ferestrei de vizualizare
+//glMatrixMode(GL_MODELVIEW);
+//glLoadIdentity (  );
+//
+//glMatrixMode (GL_PROJECTION); // se precizeaza este vorba de o reprezentare 2D, realizata prin proiectie ortogonala
+//gluOrtho2D (-800.0, 800.0, -600.0, 600.0); // sunt indicate coordonatele extreme ale ferestrei de vizualizare
+//glClear (GL_COLOR_BUFFER_BIT); // reprezentare si colorare fereastra de vizualizare
+//
+//}
+//
+//void rotireTriunghi (void)
+//{
+//
+//// TRIUNGHIUL ORIGINAL
+//glLineWidth(6.0);
+//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//
+//glBegin (GL_TRIANGLES);
+//glColor3f (0,0,1);
+//glVertex2f(100,100);
+//glColor3f (0,1,0);
+//glVertex2f(500,100);
+//glColor3f (1,0,0);
+//glVertex2f(300,400);
+//glEnd( );
+//
+//// CENTRUL DE GREUTATE
+//glColor3f(0,0,0);
+//glPointSize(10);
+//glEnable(GL_POINT_SMOOTH);
+//glBegin(GL_POINTS);
+//glVertex2f(300,200);
+//glEnd( );
+//
+//// APLICAREA TRANSFORMARII ASUPRA TRIUNGHIULUI
+//
+//glPushMatrix ( );
+//glTranslated(300,200,0);
+//glRotated(10, 0, 0, 1);
+//glTranslated(-300,-200,0);
+//glBegin (GL_TRIANGLES);
+//glColor3f (0,0,1);
+//glVertex2f(100,100);
+//glColor3f (0,1,0);
+//glVertex2f(500,100);
+//glColor3f (1,0,0);
+//glVertex2f(300,400);
+//glEnd( );
+//glPopMatrix ( );
+//
+//
+//glFlush ( );
+//
+//}
+//void main (int argc, char** argv)
+//{
+//glutInit (&argc, argv); // initializare GLUT
+//glutInitDisplayMode (GLUT_SINGLE| GLUT_RGB); // se utilizeaza un singur buffer | modul de colorare RedGreenBlue (= default)
+//glutInitWindowPosition (100, 100); // pozitia initiala a ferestrei de vizualizare (in coordonate ecran)
+//glutInitWindowSize (1200, 800); // dimensiunile ferestrei
+//glutCreateWindow ("Triunghi rotit in jurul centrului de greutate"); // creeaza fereastra
+//init ();
+//glutDisplayFunc (rotireTriunghi); // procedura desen este invocata ori de cate ori este nevoie
+//glutMainLoop ( ); // ultima instructiune a programului, asteapta (eventuale) noi date de intrare
+//
+//}
+//*/
+//
+//#include<windows.h>
+//#include <gl/freeglut.h>
+//
+//
+//double i = 0.0;
+//double j = 0.0;
+//double rot = 0.0;
+//int k = 0;
+//double alpha = 1.0;
+//int r = 1;
+//int m = 1;
+//void init(void)
+//{
+//	glClearColor(1.0, 1.0, 1.0, 0.0);
+//	glMatrixMode(GL_PROJECTION);
+//	glOrtho(-20.0, 780.0, 0.0, 600.0, -1.0, 1.0);
+//
+//}
+//void deseneazaScena(void)
+//{
+//	
+//	glClear(GL_COLOR_BUFFER_BIT);
+//	// axa de rostogolire in afara transformarii
+//	glColor3f(0, 0, 0);
+//	glBegin(GL_LINES);
+//	glVertex2i(-30, 100);
+//	glVertex2i(780, 100);
+//	glVertex2i(-30, 140);
+//	glVertex2i(780, 140);
+//	glEnd();
+//	// patratul
+//	glPushMatrix();
+//	glTranslated(i + 200, 100.0, 0.0);
+//	glPushMatrix();
+//	//glRotated (j, 0.0, 0.0, 1.0);
+//	/* glColor3f (1.0, 0.0, 0.0);
+//	glRecti (-5, 30, 5, 40);*/
+//	glColor3f(0.0, 1.0, 0.0);
+//	glRecti(-20, -10, 20, 10);
+//	glPopMatrix();
+//	glPopMatrix();
+//
+//	// patratul
+//	glPushMatrix();
+//	glRotated(rot, 0, 0.0, 1.0);
+//	/*glRotated (-5, 0, 0.0, 1.0);
+//	glRotated (5, 0, 0.0, 1.0);*/
+//	glTranslated(i + k, 100.0, 0.0);
+//	glPushMatrix();
+//
+//	glColor3f(1.0, 0.0, 1.0);
+//	glRecti(-20, -10, 20, 10);
+//	glPopMatrix();
+//	glPopMatrix();
+//	glutSwapBuffers();
+//	glFlush();
+//}
+//
+//void reshape(int w, int h)
+//{
+//	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+//	glMatrixMode(GL_PROJECTION);
+//	glLoadIdentity();
+//	glOrtho(-20.0, 780.0, 0.0, 600.0, -1.0, 1.0);
+//	glMatrixMode(GL_MODELVIEW);
+//	glLoadIdentity();
+//}
+//
+//void miscad(void)
+//{
+//	Sleep(20);
+//	i = i + alpha;
+//	k++;
+//	if (i > 750.0)
+//	{
+//		alpha = -1.0;
+//		k--;
+//	}
+//	else if (i < 0.0)
+//	{
+//		alpha = 1.0;
+//		k++;
+//	}
+//	/*if (rot > 7)
+//	{
+//		r = 0;
+//	}
+//	if (r == 0 && rot > 0)
+//		rot -= 0.10;
+//	else rot += 0.10;
+//	m = 1;	*/
+//	glutPostRedisplay();
+//}
+//
+//void miscas(void)
+//{
+//	Sleep(20);
+//	i = i + alpha;
+//	k--;
+//	if (i < 0.0)
+//	{
+//		alpha = 1.0;
+//		k++;
+//	}
+//	else if (i > 750.0)
+//	{
+//		alpha = -1.0;
+//		k--;
+//	}
+//	/*r = 1;
+//	if (rot > 7)
+//	{
+//		m = 0;
+//	}
+//	if (m == 0 && rot > 0)
+//		rot -= 0.10;
+//	else rot += 0.10;*/
+//
+//	glutPostRedisplay();
+//}
+//void mouse(int button, int state, int x, int y)
+//{
+//	switch (button) {
+//	case GLUT_LEFT_BUTTON:
+//		if (state == GLUT_DOWN)
+//			alpha = -1.0; glutIdleFunc(miscas);
+//		break;
+//	case GLUT_RIGHT_BUTTON:
+//		if (state == GLUT_DOWN)
+//			alpha = 1.0; glutIdleFunc(miscad);
+//		break;
+//	default:
+//		break;
+//	}
+//}
+//
+//
+//void SpecialInput(int key, int x, int y)
+//{
+//switch(key)
+//{
+//case GLUT_KEY_UP:
+//	//Sleep(5);
+//	if (rot > 5)
+//	{
+//		r = 0;
+//	}
+//	if (r == 0 && rot > 0)
+//		rot -= 0.07;
+//	else rot += 0.07;
+//	m = 1;	
+//break;	
+//case GLUT_KEY_DOWN:
+//  // Sleep(5);
+//	r = 0;
+//	if (rot > 5)
+//	{
+//		m = 0;
+//	}
+//	if (m == 0 && rot > 0)
+//		rot -= 0.07;
+//	else rot += 0.07;
+//break;
+////case GLUT_KEY_LEFT:
+//////do something here
+////break;
+////case GLUT_KEY_RIGHT:
+//////do something here
+////break;
+//}
+//
+//glutPostRedisplay();
+//}
+//
+//
+//void main(int argc, char** argv)
+//{
+//	glutInit(&argc, argv);
+//	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+//	glutInitWindowSize(800, 600);
+//	glutInitWindowPosition(100, 100);
+//	glutCreateWindow("Patrat care se rostogoleste");
+//	init();
+//	glutDisplayFunc(deseneazaScena);
+//	glutReshapeFunc(reshape);
+//	glutMouseFunc(mouse);
+//	 glutSpecialFunc(SpecialInput);
+//	glutMainLoop();
+//}
+
+#include<windows.h>
+#include <gl/freeglut.h>
+#include <math.h>
+
+double i = 0.0;
+double j = 0.0;
+double rot = 0.0;
+int k = 0;
+double alpha = 1.0;
+int r = 1;
+int m = 1;
+void init(void)
+{
+	/*glClearColor(0.7, 0.8, 0.95, 0.0);*/
+	glMatrixMode(GL_PROJECTION);
+	glOrtho(-20.0, 780.0, 0.0, 600.0, -1.0, 1.0);
+
+}
+
+void deseneazaScena(void)
+{
+
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	// axa de rostogolire in afara transformarii
+	glPushMatrix();
+	glTranslated(0, 115.0, 0.0);
+	glColor3f(1, 1, 1);
+	glRecti(-810, -45, 810, 45);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(0, 0, 0.0);
+	glColor3f(0.137255, 0.556863, 0.137255);
+	glRecti(-810, -69.5, 810, 69.5);
+	glPopMatrix();
+
+	glColor3f(0, 0, 0);
+	glLineWidth (2.0);
+	glEnable (GL_LINE_STIPPLE);
+	glLineStipple (1, 0x1EED);
+	glBegin (GL_LINE_STRIP); 
+	glVertex2i(-30, 115);
+	glVertex2i(780, 115);
+	glEnd();
+	glDisable (GL_LINE_STIPPLE);
+	
+	glLineWidth (5.0);
+	glBegin(GL_LINES);
+	glVertex2i(-30, 70);
+	glVertex2i(780, 70);
+	glVertex2i(-30, 160);
+	glVertex2i(780, 160);
+	glEnd();
+	// patratul
+	glPushMatrix();
+	glTranslated(i + 200, 95.0, 0.0);
+	glPushMatrix();
+	//glRotated (j, 0.0, 0.0, 1.0);
+	/* glColor3f (1.0, 0.0, 0.0);
+	glRecti (-5, 30, 5, 40);*/
+	glPushMatrix();
+	glTranslated(10, 0.0, 0.0);
+	glColor3f(0.0, 0.0, 0.0);
+	glRecti(-5, -15, 5, 15);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(-10, 0.0, 0.0);
+	glColor3f(0.0, 0.0, 0.0);
+	glRecti(-5, -15, 5, 15);
+	glPopMatrix();
+
+	glColor3f(0.0, 1.0, 0.0);
+	glRecti(-25, -7, 25, 7);
+	glPopMatrix();
+	glPopMatrix();
+
+	// patratul
+	glPushMatrix();
+	glRotated(rot, 0, 0.0, 1.0);
+	/*glRotated (-5, 0, 0.0, 1.0);
+	glRotated (5, 0, 0.0, 1.0);*/
+	glTranslated(i + k, 95.0, 0.0);
+	glPushMatrix();
+
+	glPushMatrix();
+	glTranslated(10, 0.0, 0.0);
+	glColor3f(0.0, 0.0, 0.0);
+	glRecti(-5, -15, 5, 15);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(-10, 0.0, 0.0);
+	glColor3f(0.0, 0.0, 0.0);
+	glRecti(-5, -15, 5, 15);
+	glPopMatrix();
+
+	glColor3f(1.0, 0.0, 1.0);
+	glRecti(-15, -7, 15, 7);
+	glPopMatrix();
+	glPopMatrix();
+
+	// patratul
+	glPushMatrix();
+	glTranslated(780 - i/2, 135.0, 0.0);
+	glPushMatrix();
+	//glRotated (j, 0.0, 0.0, 1.0);
+	/* glColor3f (1.0, 0.0, 0.0);
+	glRecti (-5, 30, 5, 40);*/
+
+	glPushMatrix();
+	glTranslated(10, 0.0, 0.0);
+	glColor3f(0.0, 0.0, 0.0);
+	glRecti(-5, -15, 5, 15);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(-10, 0.0, 0.0);
+	glColor3f(0.0, 0.0, 0.0);
+	glRecti(-5, -15, 5, 15);
+	glPopMatrix();
+
+	glColor3f(0.0, 0.0, 1.0);
+	glRecti(-15, -7, 15, 7);
+	glPopMatrix();
+	glPopMatrix();
+
+	// patratul
+	glPushMatrix();
+	glTranslated(250 - i/2, 135.0, 0.0);
+	glPushMatrix();
+	//glRotated (j, 0.0, 0.0, 1.0);
+	/* glColor3f (1.0, 0.0, 0.0);
+	glRecti (-5, 30, 5, 40);*/
+
+	glPushMatrix();
+	glTranslated(10, 0.0, 0.0);
+	glColor3f(0.0, 0.0, 0.0);
+	glRecti(-5, -15, 5, 15);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(-10, 0.0, 0.0);
+	glColor3f(0.0, 0.0, 0.0);
+	glRecti(-5, -15, 5, 15);
+	glPopMatrix();
+
+	glColor3f(1.0, 0.0, 0.0);
+	glRecti(-20, -7, 20, 7);
+	glPopMatrix();
+	glPopMatrix();
+
+	//soare
+	glPointSize(100);
+	glEnable(GL_POINT_SMOOTH);
+	glBegin(GL_POINTS);
+	glColor3f(1.0, 0.5, 0.0);
+	glVertex2i(375, 450);
+	glEnd();
+	glDisable(GL_POINT_SMOOTH);
+
+	
+	glBegin(GL_LINES);
+	glRotated(i,0,0,1);
+	glColor3f(1.0, 0.5, 0.0);
+	glVertex2i(380, 450);
+	glVertex2i(425, 450);
+	glVertex2i(380, 450);
+	glVertex2i(325, 450);
+	glVertex2i(375, 450);
+	glVertex2i(375, 495);
+	glVertex2i(375, 450);
+	glVertex2i(375, 405);
+	glVertex2i(375, 450);
+	glVertex2i(420, 490);
+	glVertex2i(375, 450);
+	glVertex2i(330, 490);
+	glVertex2i(375, 450);
+	glVertex2i(330, 410);
+	glVertex2i(375, 450);
+	glVertex2i(420, 410);
+	glEnd();
+
+	glPushMatrix ( );
+	glTranslated(375, 450,0);
+	glRotated(i, 0, 0, 1);
+	glTranslated(-375, -450,0);
+	glPointSize(100);
+	glEnable(GL_POINT_SMOOTH);
+	glBegin(GL_POINTS);
+	glColor3f(1.0, 1.0, 0.0);
+	glVertex2i(375, 450);
+	glEnd();
+	glDisable(GL_POINT_SMOOTH);
+
+	
+	glBegin(GL_LINES);
+	glRotated(i,0,0,1);
+	glColor3f(1.0, 1.0, 0.0);
+	glVertex2i(380, 450);
+	glVertex2i(425, 450);
+	glVertex2i(380, 450);
+	glVertex2i(325, 450);
+	glVertex2i(375, 450);
+	glVertex2i(375, 495);
+	glVertex2i(375, 450);
+	glVertex2i(375, 405);
+	glVertex2i(375, 450);
+	glVertex2i(420, 490);
+	glVertex2i(375, 450);
+	glVertex2i(330, 490);
+	glVertex2i(375, 450);
+	glVertex2i(330, 410);
+	glVertex2i(375, 450);
+	glVertex2i(420, 410);
+	glEnd();
+	glPopMatrix ( );
+
+	//copacii 
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0.5f, 0.35f, 0.05f);
+	glVertex2f(117.5,160);
+	glVertex2f(132.5,160);
+	glVertex2f(125, 245);
+	glEnd( );
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0.5f, 0.35f, 0.05f);
+	glVertex2f(217.5,160);
+	glVertex2f(232.5,160);
+	glVertex2f(225, 245);
+	glEnd( );
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0.5f, 0.35f, 0.05f);
+	glVertex2f(317.5,160);
+	glVertex2f(332.5,160);
+	glVertex2f(325, 245);
+	glEnd( );
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0.5f, 0.35f, 0.05f);
+	glVertex2f(417.5,160);
+	glVertex2f(432.5,160);
+	glVertex2f(425, 245);
+	glEnd( );
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0.5f, 0.35f, 0.05f);
+	glVertex2f(517.5,160);
+	glVertex2f(532.5,160);
+	glVertex2f(525, 245);
+	glEnd( );
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0.5f, 0.35f, 0.05f);
+	glVertex2f(617.5,160);
+	glVertex2f(632.5,160);
+	glVertex2f(625, 245);
+	glEnd( );
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0.5f, 0.35f, 0.05f);
+	glVertex2f(717.5,160);
+	glVertex2f(732.5,160);
+	glVertex2f(725, 245);
+	glEnd( );
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0.5f, 0.35f, 0.05f);
+	glVertex2f(17.5,160);
+	glVertex2f(32.5,160);
+	glVertex2f(25, 245);
+	glEnd( );
+
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0.5,1,0);
+	glVertex2f(100,200);
+	glVertex2f(150,200);
+	glVertex2f(125, 250);
+	glEnd( );
+
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0.0,0.5,0);
+	glVertex2f(200,200);
+	glVertex2f(250,200);
+	glVertex2f(225, 250);
+	glEnd( );
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0.5,1,0);
+	glVertex2f(300,200);
+	glVertex2f(350,200);
+	glVertex2f(325, 250);
+	glEnd( );
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0.0,0.5,0);
+	glVertex2f(400,200);
+	glVertex2f(450,200);
+	glVertex2f(425, 250);
+	glEnd( );
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0.5,1,0);
+	glVertex2f(500,200);
+	glVertex2f(550,200);
+	glVertex2f(525, 250);
+	glEnd( );
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0,0.5,0);
+	glVertex2f(600,200);
+	glVertex2f(650,200);
+	glVertex2f(625, 250);
+	glEnd( );
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0.5,1,0);
+	glVertex2f(700,200);
+	glVertex2f(750,200);
+	glVertex2f(725, 250);
+	glEnd( );
+
+	glBegin (GL_TRIANGLES);
+	glColor3f (0,0.5,0);
+	glVertex2f(0,200);
+	glVertex2f(50,200);
+	glVertex2f(25, 250);
+	glEnd( );
+	glutSwapBuffers();
+	glFlush();
+}
+
+void reshape(int w, int h)
+{
+	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(-20.0, 780.0, 0.0, 600.0, -1.0, 1.0);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+}
+
+void miscad(void)
+{
+	Sleep(20);
+	i = i + alpha;
+	k++;
+	if (i > 750.0)
+	{
+		alpha = -1.0;
+		k--;
+	}
+	else if (i < 0.0)
+	{
+		alpha = 1.0;
+		k++;
+	}
+	/*if (rot > 7)
+	{
+	r = 0;
+	}
+	if (r == 0 && rot > 0)
+	rot -= 0.10;
+	else rot += 0.10;
+	m = 1;	*/
+	glutPostRedisplay();
+}
+
+void miscas(void)
+{
+	Sleep(20);
+	i = i + alpha;
+	k--;
+	if (i < 0.0)
+	{
+		alpha = 1.0;
+		k++;
+	}
+	else if (i > 750.0)
+	{
+		alpha = -1.0;
+		k--;
+	}
+	/*r = 1;
+	if (rot > 7)
+	{
+	m = 0;
+	}
+	if (m == 0 && rot > 0)
+	rot -= 0.10;
+	else rot += 0.10;*/
+
+	glutPostRedisplay();
+}
+void mouse(int button, int state, int x, int y)
+{
+	switch (button) {
+	case GLUT_LEFT_BUTTON:
+		if (state == GLUT_DOWN)
+			alpha = -1.0; glutIdleFunc(miscas);
+		break;
+	case GLUT_RIGHT_BUTTON:
+		if (state == GLUT_DOWN)
+			alpha = 1.0; glutIdleFunc(miscad);
+		break;
+	default:
+		break;
+	}
+}
+
+
+void SpecialInput(int key, int x, int y)
+{
+	switch (key)
+	{
+	case GLUT_KEY_UP:
+		//Sleep(5);
+		rot += 0.5;
+		
+		break;
+	case GLUT_KEY_DOWN:
+		// Sleep(5);
+		
+		rot -= 0.5;
+		break;
+    case GLUT_KEY_LEFT:
+		
+		k-=10;
+		break;
+	case GLUT_KEY_RIGHT:
+		
+		k+=10;
+		break;
+	}
+
+	glutPostRedisplay();
+}
+
+
+void main(int argc, char** argv)
+{
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitWindowSize(800, 600);
+	glutInitWindowPosition(100, 100);
+	glutCreateWindow("Despasire");
+	glClearColor(0.7, 0.8, 0.95, 0.0);
+	init();
+	glutDisplayFunc(deseneazaScena);
+	glutReshapeFunc(reshape);
+	glutMouseFunc(mouse);
+	glutSpecialFunc(SpecialInput);
+	glutMainLoop();
+	/*system("pause");
+    glClearColor(0.0f, 1.0f, 0.0f, 1.0f);*/
+}
